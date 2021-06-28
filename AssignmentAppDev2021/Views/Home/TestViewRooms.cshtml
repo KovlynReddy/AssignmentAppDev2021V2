@@ -1,0 +1,22 @@
+﻿@model AssignmentAppDev2021.Models.ViewRoomsViewModel
+
+@{
+    ViewBag.Title = "TestViewRooms";
+}
+
+<h2>TestViewRooms</h2>
+
+<div>
+    @foreach (var item in Model.Rooms)
+    {
+
+        Html.RenderPartial("_RoomView",item);
+    }
+
+    @{
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

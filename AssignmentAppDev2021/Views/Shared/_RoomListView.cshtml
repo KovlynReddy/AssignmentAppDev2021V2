@@ -1,0 +1,8 @@
+﻿@model IEnumerable<AssignmentAppDev2021.Models.Room>
+
+
+@foreach (var item in Model) {
+
+    Html.RenderPartial("TestingBooking",AssignmentAppDev2021.Models.BookRoomViewModel.ToViewModel(  item));
+
+}
