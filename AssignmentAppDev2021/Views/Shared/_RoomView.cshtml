@@ -7,6 +7,24 @@
 <div class="form-horizontal">
 
     <hr />
+
+    @Html.HiddenFor(m => m.RoomId)
+    @Html.HiddenFor(m => m.ReservationId)
+    @Html.HiddenFor(m => m.HostleId)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.BookingId)
+    @Html.HiddenFor(m => m.UserId)
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(model => model.RoomId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -27,8 +45,38 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Book" class="btn btn-default success" />
+            <input type="submit" value="Book" class="btn btn-default btn-primary" />
         </div>
     </div>
+    @if (Model.IsVacantBool)
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Book" class="btn btn-default btn-primary" />
+            </div>
+        </div>
+    }
+    else if (Model.UserId == User.Identity.Name)
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="View My Booking" class="btn btn-default btn-default" />
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input value="No Vaccancy" class="btn btn-default btn-danger" />
+            </div>
+        </div>
+
+    }
+
+
+
+
 </div>
 }

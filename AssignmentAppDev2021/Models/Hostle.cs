@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -8,6 +10,7 @@ namespace AssignmentAppDev2021.Models
 {
     public class Hostle
     {
+        [Key]
         public int Id { get; set; }
         public string HostleId { get; set; }
         public string LocationId { get; set; }
@@ -16,6 +19,7 @@ namespace AssignmentAppDev2021.Models
 
     public class Reservation
     {
+        [Key]
         public int Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -38,6 +42,7 @@ namespace AssignmentAppDev2021.Models
     }
     public class Room
     {
+        [Key]
         public int Id { get; set; }
         public string RoomId { get; set; }
         public string HostleId { get; set; }
@@ -55,20 +60,23 @@ namespace AssignmentAppDev2021.Models
                 {
                     return true;
                 }
-                else if (IsVacant > 1 ) {
+                else if (IsVacant > 1)
+                {
                 }
                 return false;
-            } 
+            }
         }
 
     }
 
     public class Booking
     {
+        [Key]
         public int Id { get; set; }
         public string UserId { get; set; }
         public string BookingId { get; set; }
         public string Reservation { get; set; }
+        public int Total { get; set; }
     }
     public interface IHostleRepository
     {
@@ -82,7 +90,6 @@ namespace AssignmentAppDev2021.Models
         //Task<List<Hostle>> GetAllHostlesAsync();
         List<Hostle> GetAllHostles();
     }
-
     public interface IRoomRepository
     {
         //Task<Room> AddRoomAsync(Room newRoom);
@@ -120,10 +127,11 @@ namespace AssignmentAppDev2021.Models
         List<Booking> GetAllBooking();
     }
 
-    public interface IUserRepository {
+    public interface IUserRepository
+    {
         string AddUser(string newUser);
         string GetUser(int index);
-        List<string> GetAllUsers();  
+        List<string> GetAllUsers();
 
         string AddCountry(string newCountry);
         string GetCountry(int index);
@@ -131,8 +139,9 @@ namespace AssignmentAppDev2021.Models
 
     }
 
-    public class MockDB : IHostleRepository, IBookingRepository, IReservationRepository, IRoomRepository , IUserRepository
+    public class MockDB : IHostleRepository, IBookingRepository, IReservationRepository, IRoomRepository, IUserRepository
     {
+        public HotelDB _Db { get; set; }
         public List<Hostle> hostles { get; set; } = new List<Hostle>();
         public List<Booking> bookings { get; set; } = new List<Booking>();
         public List<Reservation> reservations { get; set; } = new List<Reservation>();
@@ -140,24 +149,26 @@ namespace AssignmentAppDev2021.Models
         public List<string> countries { get; set; } = new List<string>();
         public List<string> users { get; set; }
 
-        public void InitDb() { 
-        hostles = new List<Hostle>{ new Hostle { Id = 1 , HostleId = $"HostleId1" , HostleName = $"Hostle1" , LocationId = "1"} ,
+        public void InitDb()
+        {
+            _Db = new HotelDB();
+            hostles = new List<Hostle>{ new Hostle { Id = 1 , HostleId = $"HostleId1" , HostleName = $"Hostle1" , LocationId = "1"} ,
                                     new Hostle { Id = 2 , HostleId = $"HostleId2" , HostleName = $"Hostle2" , LocationId = "2"} ,
                                     new Hostle { Id = 3 , HostleId = $"HostleId3" , HostleName = $"Hostle3" , LocationId = "3"} ,
-                                    new Hostle { Id = 4 , HostleId = $"HostleId4" , HostleName = $"Hostle4" , LocationId = "3"} 
+                                    new Hostle { Id = 4 , HostleId = $"HostleId4" , HostleName = $"Hostle4" , LocationId = "3"}
 
                                   };
 
-            bookings = new List<Booking>{ new Booking { Id = 1 , BookingId = "BookingId1", UserId = "UserId1", Reservation = "ReservationId1"  } ,
-                                    new Booking { Id = 2 , BookingId = "BookingId2", UserId = "UserId2", Reservation = "ReservationId2"  } ,
-                                    new Booking { Id = 3 , BookingId = "BookingId3", UserId = "UserId3", Reservation = "ReservationId3"  } ,
-                                    new Booking { Id = 4 , BookingId = "BookingId4", UserId = "UserId4", Reservation = "ReservationId4"  } ,
-                                    new Booking { Id = 5 , BookingId = "BookingId5", UserId = "UserId5", Reservation = "ReservationId5"  } ,
-                                    new Booking { Id = 6 , BookingId = "BookingId6", UserId = "UserId6", Reservation = "ReservationId6"  } ,
-                                    new Booking { Id = 7 , BookingId = "BookingId7", UserId = "UserId7", Reservation = "ReservationId17"  } ,
-                                    new Booking { Id = 8 , BookingId = "BookingId8", UserId = "UserId8", Reservation = "ReservationId18"  } ,
-                                    new Booking { Id = 9 , BookingId = "BookingId9", UserId = "UserId9", Reservation = "ReservationId19"  } ,
-                                    new Booking { Id = 10 , BookingId = "BookingId10", UserId = "UserId10", Reservation = "ReservationId20"  } 
+            bookings = new List<Booking>{ new Booking { Id = 1 , BookingId = "BookingId1", UserId = "UserId1", Reservation = "ReservationId1" , Total = 100  } ,
+                                    new Booking { Id = 2 , BookingId = "BookingId2", UserId = "UserId2", Reservation = "ReservationId2" , Total = 103 } ,
+                                    new Booking { Id = 3 , BookingId = "BookingId3", UserId = "UserId3", Reservation = "ReservationId3" , Total = 120 } ,
+                                    new Booking { Id = 4 , BookingId = "BookingId4", UserId = "UserId4", Reservation = "ReservationId4" , Total = 130 } ,
+                                    new Booking { Id = 5 , BookingId = "BookingId5", UserId = "UserId5", Reservation = "ReservationId5" , Total = 130 } ,
+                                    new Booking { Id = 6 , BookingId = "BookingId6", UserId = "UserId6", Reservation = "ReservationId6"  , Total = 150} ,
+                                    new Booking { Id = 7 , BookingId = "BookingId7", UserId = "UserId7", Reservation = "ReservationId17" , Total = 200 } ,
+                                    new Booking { Id = 8 , BookingId = "BookingId8", UserId = "UserId8", Reservation = "ReservationId18"  , Total = 1004} ,
+                                    new Booking { Id = 9 , BookingId = "BookingId9", UserId = "UserId9", Reservation = "ReservationId19" , Total = 1010 } ,
+                                    new Booking { Id = 10 , BookingId = "BookingId10", UserId = "UserId10", Reservation = "ReservationId20" , Total = 200 }
 
                                   };
 
@@ -174,9 +185,9 @@ namespace AssignmentAppDev2021.Models
                                     new Reservation  { Id = 11 , StartDate = DateTime.Parse("05-10-2021"), EndDate = DateTime.Parse("05-28-2021"), ReservaationId = "ReservationId11" } ,
                                     new Reservation  { Id = 12 , StartDate = DateTime.Parse("05-10-2021"), EndDate = DateTime.Parse("05-26-2021"), ReservaationId = "ReservationId12" } ,
                                     new Reservation  { Id = 13 , StartDate = DateTime.Parse("05-10-2021"), EndDate = DateTime.Parse("06-10-2021"), ReservaationId = "ReservationId13" } ,
-                                    new Reservation  { Id = 14 , StartDate = DateTime.Parse("06-10-2021"), EndDate = DateTime.Parse("06-15-2021"), ReservaationId = "ReservationId14" } ,
-                                    new Reservation  { Id = 15 , StartDate = DateTime.Parse("06-10-2021"), EndDate = DateTime.Parse("06-16-2021"), ReservaationId = "ReservationId15" } ,
-                                    new Reservation  { Id = 16 , StartDate = DateTime.Parse("06-01-2021"), EndDate = DateTime.Parse("06-16-2021"), ReservaationId = "ReservationId16" } ,
+                                    new Reservation  { Id = 14 , StartDate = DateTime.Parse("06-27-2021"), EndDate = DateTime.Parse("07-15-2021"), ReservaationId = "ReservationId14" } ,
+                                    new Reservation  { Id = 15 , StartDate = DateTime.Parse("06-26-2021"), EndDate = DateTime.Parse("07-16-2021"), ReservaationId = "ReservationId15" } ,
+                                    new Reservation  { Id = 16 , StartDate = DateTime.Parse("06-28-2021"), EndDate = DateTime.Parse("06-29-2021"), ReservaationId = "ReservationId16" } ,
                                     new Reservation  { Id = 17 , StartDate = DateTime.Parse("06-01-2021"), EndDate = DateTime.Parse("06-17-2021"), ReservaationId = "ReservationId17" } ,
                                     new Reservation  { Id = 18 , StartDate = DateTime.Parse("06-01-2021"), EndDate = DateTime.Parse("06-20-2021"), ReservaationId = "ReservationId18" } ,
                                     new Reservation  { Id = 19 , StartDate = DateTime.Parse("06-01-2021"), EndDate = DateTime.Parse("07-21-2021"), ReservaationId = "ReservationId19" } ,
@@ -185,42 +196,20 @@ namespace AssignmentAppDev2021.Models
                                   };
 
             rooms = new List<Room>{ new Room { Id = 1 ,RoomId = "RoomId1", HostleId = "HostleId1" , BookingId = "BookingId1", Floor = 1 , ReservationId = "ReservationId1", RoomNumber = 1 , UserId = "UserId1"} ,
-                                    new Room { Id = 2 ,RoomId = "RoomId2", HostleId = "HostleId2" , BookingId = "BookingId2", Floor = 1 , ReservationId = "ReservationId2", RoomNumber = 1 , UserId = "UserId2"} ,
-                                    new Room { Id = 3 ,RoomId = "RoomId3", HostleId = "HostleId3" , BookingId = "BookingId3", Floor = 1 , ReservationId = "ReservationId3", RoomNumber = 1 , UserId = "UserId3"} ,
-                                    new Room { Id = 4 ,RoomId = "RoomId4", HostleId = "HostleId4" , BookingId = "BookingId4", Floor = 1 , ReservationId = "ReservationId4", RoomNumber = 1 , UserId = "UserId4"} ,
-                                    new Room { Id = 5 ,RoomId = "RoomId5", HostleId = "HostleId1" , BookingId = "BookingId5", Floor = 1 , ReservationId = "ReservationId5", RoomNumber = 2 , UserId = "UserId5"} ,
-                                    new Room { Id = 6 ,RoomId = "RoomId6", HostleId = "HostleId2" , BookingId = "BookingId6", Floor = 1 , ReservationId = "ReservationId16", RoomNumber = 2 , UserId = "UserId6"} ,
-                                    new Room { Id = 7 ,RoomId = "RoomId7", HostleId = "HostleId3" , BookingId = "BookingId7", Floor = 1 , ReservationId = "ReservationId11", RoomNumber = 2 , UserId = "UserId7"} ,
-                                    new Room { Id = 8 ,RoomId = "RoomId8", HostleId = "HostleId4" , BookingId = "BookingId8", Floor = 1 , ReservationId = "ReservationId12", RoomNumber = 2 , UserId = "UserId8"} ,
-                                    new Room { Id = 9 ,RoomId = "RoomId9", HostleId = "HostleId1" , BookingId = "BookingId9", Floor = 2 , ReservationId = "ReservationId13", RoomNumber = 1 , UserId = "UserId9"} ,
-                                    new Room { Id = 10,RoomId = "RoomId10" , HostleId = "HostleId2" , BookingId = "BookingId10", Floor = 2, ReservationId = "ReservationId10", RoomNumber = 1 , UserId = "UserId10"} ,
-                                    new Room { Id = 11,RoomId = "RoomId11" , HostleId = "HostleId3" , BookingId = "BookingId1", Floor = 2 , ReservationId = "ReservationId1", RoomNumber = 1 , UserId = "UserId1"} ,
-                                    new Room { Id = 12,RoomId = "RoomId12" , HostleId = "HostleId4" , BookingId = "BookingId2", Floor = 2 , ReservationId = "ReservationId2", RoomNumber = 1 , UserId = "UserId2"} ,
-                                    new Room { Id = 13,RoomId = "RoomId13" , HostleId = "HostleId1" , BookingId = "BookingId3", Floor = 2 , ReservationId = "ReservationId3", RoomNumber = 2 , UserId = "UserId3"} ,
-                                    new Room { Id = 14,RoomId = "RoomId14" , HostleId = "HostleId2" , BookingId = "BookingId4", Floor = 2 , ReservationId = "ReservationId4", RoomNumber = 2 , UserId = "UserId4"} ,
-                                    new Room { Id = 15,RoomId = "RoomId15" , HostleId = "HostleId3" , BookingId = "BookingId5", Floor = 2 , ReservationId = "ReservationId5", RoomNumber = 2 , UserId = "UserId5"} ,
-                                    new Room { Id = 16,RoomId = "RoomId16" , HostleId = "HostleId4" , BookingId = "BookingId6", Floor = 2 , ReservationId = "ReservationId6", RoomNumber = 2 , UserId = "UserId6"} 
-
+                                    new Room { Id = 2 ,RoomId = "RoomId2", HostleId = "HostleId2" , BookingId = "BookingId2", Floor = 1 , ReservationId = "ReservationId2", RoomNumber = 1 , UserId = "UserId2"} 
+                        
                                   };
-           
+
             countries = new List<string>{ "South Africa",
                                             "UK" ,
                                             "USA"
 
-                                  };      
-            
+                                  };
+
             users = new List<string>{ "UserId1",
                                        "UserId2",
-                                       "UserId3" ,
-                                       "UserId4" ,
-                                       "UserId5" ,
-                                       "UserId6",
-                                       "UserId7" ,
-                                       "UserId8" ,
-                                       "UserId9" ,
-                                       "UserId10" 
-                                  };
-           
+                                       "UserId3" };
+
 
 
 
@@ -228,6 +217,9 @@ namespace AssignmentAppDev2021.Models
 
         public Booking AddBooking(Booking newBooking)
         {
+            _Db.bookings.Add(newBooking);
+            _Db.SaveChanges();
+
             bookings.Add(newBooking);
 
             return bookings.FirstOrDefault(m => m.BookingId == newBooking.BookingId);
@@ -235,11 +227,16 @@ namespace AssignmentAppDev2021.Models
 
         public Hostle AddHostle(Hostle newHostle)
         {
-            throw new NotImplementedException();
+            _Db.hotels.Add(newHostle);
+            _Db.SaveChanges();
+
+            return newHostle;
         }
 
         public Reservation AddReservation(Reservation newReservation)
         {
+            _Db.reservations.Add(newReservation);
+            _Db.SaveChanges();
             reservations.Add(newReservation);
 
             return reservations.FirstOrDefault(m => m.ReservaationId == newReservation.ReservaationId);
@@ -247,7 +244,9 @@ namespace AssignmentAppDev2021.Models
 
         public Room AddRoom(Room newRoom)
         {
-            throw new NotImplementedException();
+            _Db.rooms.Add(newRoom);
+            _Db.SaveChanges();
+            return newRoom;
         }
 
         public Task<Hostle> DeleteHostleAsync(string hostleId)
@@ -257,22 +256,61 @@ namespace AssignmentAppDev2021.Models
 
         public List<Booking> GetAllBooking()
         {
-            return bookings;
+            var aBookings = this.bookings;
+            if (_Db != null)
+            {
+                var dbrooms = _Db.bookings.ToList();
+                foreach (var aroom in dbrooms)
+                {
+                    aBookings.Add(aroom);
+                }
+            }
+            return aBookings;
         }
 
         public List<Hostle> GetAllHostles()
         {
-            return hostles;
+            var AHotels = this.hostles;
+            if (_Db != null)
+            {
+                var dbrooms = _Db.hotels.ToList();
+                foreach (var aroom in dbrooms)
+                {
+                    AHotels.Add(aroom);
+                }
+            }
+            return AHotels;
         }
 
         public List<Reservation> GetAllReservation()
         {
-            return reservations;
+            var Areservations = this.reservations;
+            if (_Db != null)
+            {
+                var dbrooms = _Db.reservations.ToList();
+                foreach (var aroom in dbrooms)
+                {
+                    Areservations.Add(aroom);
+                }
+            }
+
+            return Areservations;
         }
 
         public List<Room> GetAllRooms()
         {
-            return rooms;
+            var asrooms = this.rooms;
+            if (_Db != null)
+            {
+                var dbrooms = _Db.rooms.ToList();
+                foreach (var aroom in dbrooms)
+                {
+                    asrooms.Add(aroom);
+                }
+            }
+
+
+            return asrooms;
         }
 
         public Booking GetBooking(string bookingId)
@@ -328,7 +366,11 @@ namespace AssignmentAppDev2021.Models
             return countries;
         }
 
-        public Room UpdateRoom(Room updatedRoom) {
+        public Room UpdateRoom(Room updatedRoom)
+        {
+            _Db.rooms.Attach(updatedRoom);
+            _Db.Entry(updatedRoom).State = EntityState.Modified;
+            _Db.SaveChanges();
 
             var room = rooms.Where(r => r.RoomId == updatedRoom.RoomId).FirstOrDefault();
             rooms.Remove(room);
@@ -336,5 +378,22 @@ namespace AssignmentAppDev2021.Models
 
             return rooms.Where(r => r.RoomId == updatedRoom.RoomId).FirstOrDefault();
         }
+
+        public void PopEF()
+        {
+            if (_Db != null)
+            {
+
+
+            this.rooms.AddRange(_Db.rooms.ToList());
+            this.hostles.AddRange(_Db.hotels.ToList());
+            this.bookings.AddRange(_Db.bookings.ToList());
+            this.reservations.AddRange(_Db.reservations.ToList());
+
+            }
+
+        }
     }
+
+
 }

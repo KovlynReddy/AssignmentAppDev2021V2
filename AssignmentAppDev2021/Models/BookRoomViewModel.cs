@@ -29,4 +29,28 @@ namespace AssignmentAppDev2021.Models
             return model;
         }
     }
+
+    public class BookRoomDetailsViewModel : BookRoomViewModel {
+
+
+        public int Total { get; set; }
+
+        public static BookRoomDetailsViewModel ToViewModel(BookRoomViewModel model)
+        {
+
+            BookRoomDetailsViewModel ViewModel = new BookRoomDetailsViewModel();
+
+            ViewModel.RoomId = model.RoomId;
+            ViewModel.HotelId = model.HotelId;
+            ViewModel.ClientId = model.ClientId;
+            ViewModel.HotelName = model.HotelName;
+            ViewModel.StartDate = model.StartDate;
+            ViewModel.NumNights = model.NumNights;
+            ViewModel.NumPeople = model.NumPeople;
+            //  rest 
+
+            return ViewModel;
+
+        }
+    }
 }
