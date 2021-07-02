@@ -4,8 +4,6 @@
     ViewBag.Title = "TestViewRooms";
 }
 
-<h2>TestViewRooms</h2>
-    @Html.ActionLink("Add Blank Room", "TestEF", "Home") |
 
 <div>
     @foreach (var item in Model.Rooms)
@@ -17,6 +15,5 @@
     @{
     }
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+    @Html.ActionLink("Add Blank Room", "TestEF", "Home") |

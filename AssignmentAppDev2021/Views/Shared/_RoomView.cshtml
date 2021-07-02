@@ -1,13 +1,13 @@
 ﻿@model AssignmentAppDev2021.Models.Room
 
-@using (Html.BeginForm("BookARoom", "Home", FormMethod.Get))
+@using (Html.BeginForm("BookARoom", "Home",new {  id = Model.RoomId}, FormMethod.Get))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div class="form-horizontal row justify-content-center align-items-cente jumbotron">
 
     <hr />
-
+    <img src="~/Content/StalkImage.png" alt="Sample Photo" class="mr-3 mt-3 rounded-circle" style="width:60px;"/>
     @Html.HiddenFor(m => m.RoomId)
     @Html.HiddenFor(m => m.ReservationId)
     @Html.HiddenFor(m => m.HostleId)
@@ -43,24 +43,19 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Book" class="btn btn-default btn-primary" />
-        </div>
-    </div>
-    @if (Model.IsVacantBool)
-    {
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Book" class="btn btn-default btn-primary" />
-            </div>
-        </div>
-    }
-    else if (Model.UserId == User.Identity.Name)
+    @if (Model.UserId == User.Identity.Name)
     {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="View My Booking" class="btn btn-default btn-default" />
+            </div>
+        </div>
+    }
+    else if(Model.IsVacant == 1)
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Book" class="btn btn-default btn-primary" />
             </div>
         </div>
 
@@ -69,7 +64,7 @@
     {
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input value="No Vaccancy" class="btn btn-default btn-danger" />
+                <input value="Not Vaccant" class="btn btn-default btn-danger" />
             </div>
         </div>
 

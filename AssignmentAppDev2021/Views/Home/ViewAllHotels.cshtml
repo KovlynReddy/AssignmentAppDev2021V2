@@ -1,0 +1,14 @@
+﻿@model AssignmentAppDev2021.Controllers.HomeController.AllHotels
+@{
+    ViewBag.Title = "ViewAllHotels";
+}
+<img src="~/Content/Hotela.jpg" alt="Sample Photo" />
+
+@foreach (var item in Model.Hotels)
+{
+    if (item.HostleId != null )
+    {
+
+    @Html.DisplayText(item.HostleId);
+    }
+}

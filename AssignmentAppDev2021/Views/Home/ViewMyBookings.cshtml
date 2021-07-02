@@ -1,0 +1,13 @@
+﻿@model AssignmentAppDev2021.Controllers.HomeController.MyBookingModel
+@{
+    ViewBag.Title = "ViewMyBookings";
+}
+
+<h2>ViewMyBookings</h2>
+
+@foreach (var item in Model.history)
+{
+
+    Html.RenderPartial("_RoomView",item);
+
+}

@@ -115,7 +115,7 @@ namespace AssignmentAppDev2021.Controllers
 
                 _Db.AddBooking(newBooking);
                 _Db.AddReservation(newReservation);
-                _Db.UpdateRoom(Room);
+                //_Db.UpdateRoom(Room);
             }
 
             ViewRoomsViewModel roomviewmodel = new ViewRoomsViewModel();
@@ -165,8 +165,7 @@ namespace AssignmentAppDev2021.Controllers
             var AllReservations = _Db.GetAllReservation();
             var lastReservation = AllReservations.FirstOrDefault(r => r.ReservaationId == room.ReservationId);
             int Total = 0;
-            if (lastReservation.EndDate < DateTime.Today)
-            {
+
                 // you can book 
                 // change room details 
                 // Add Username to Rooom
@@ -191,7 +190,7 @@ namespace AssignmentAppDev2021.Controllers
                 _Db.AddBooking(newBooking);
                 _Db.AddReservation(newReservation);
                 _Db.UpdateRoom(room);
-            }
+      
 
             // you cant book 
 
@@ -240,7 +239,7 @@ namespace AssignmentAppDev2021.Controllers
             //
             // get room
             Room room = new Room();
-            room = _Db.GetAllRooms().FirstOrDefault(m => m.Id.ToString() == id);
+            room = _Db.GetAllRooms().FirstOrDefault(m => m.RoomId == id);
             // get user
             string UserName = User.Identity.Name;
 
@@ -258,20 +257,61 @@ namespace AssignmentAppDev2021.Controllers
             var model = BookRoomViewModel.ToViewModel(room);
 
 
-            //if (room.UserId == UserName)
-            //{
-            //    //BookRoomViewModel CurrentBooking = new BookRoomViewModel();
+            if (room.UserId == UserName)
+            {
+                //BookRoomViewModel CurrentBooking = new BookRoomViewModel();
 
 
-            //    BookRoomDetailsViewModel CurrentBookingView = (BookRoomDetailsViewModel)model;
-            //    var mybooking = _Db.GetAllBooking().FirstOrDefault(m => m.BookingId == room.BookingId);
-            //    CurrentBookingView.Total = mybooking.Total;
-            //    // view Details 
-            //    return View("ViewBookingDetails", CurrentBookingView);
-            //}
+                BookRoomDetailsViewModel CurrentBookingView = BookRoomDetailsViewModel.ToViewModel(model);
+                var mybooking = _Db.GetAllBooking().FirstOrDefault(m => m.BookingId == room.BookingId);
+                if (mybooking != null)
+                {
+
+                CurrentBookingView.Total = mybooking.Total;
+                }
+                // view Details 
+                return View("ViewBookingDetails", CurrentBookingView);
+            }
 
 
             return View("TestingBooking", model);
+        }
+
+        public ActionResult ViewMyBookings()
+        {
+            List<Room> modeldata = new List<Room>();
+            MyBookingModel model = new MyBookingModel();
+
+            model.MyName = User.Identity.Name;
+            modeldata = _Db.GetAllRooms().Where(b => b.UserId == model.MyName).ToList();
+
+            model.history = modeldata;
+            return View(model);
+        }
+
+        public ActionResult ViewAllHotels() {
+
+            AllHotels model = new AllHotels();
+
+            var Hotels = _Db.GetAllRooms().Select(m => m.HostleId).Distinct().ToList();
+            foreach (var item in Hotels)
+            {
+                model.Hotels.Add(new Hostle(item));
+            }
+
+            return View(model);
+        }
+
+        public class MyBookingModel {
+
+            public List<Room> history { get; set; } = new List<Room>();
+            public string MyName { get; set; }
+
+        }
+
+        public class AllHotels {
+
+            public List<Hostle> Hotels { get; set; }= new List<Hostle>();
         }
     }
 }

@@ -170,6 +170,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -191,6 +192,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Hotela.jpg" />
+    <Content Include="Content\StalkImage.png" />
+    <Content Include="Content\TestingImage.jfif" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -249,6 +253,10 @@
     <Content Include="Views\Home\Testing___.cshtml" />
     <Content Include="Views\Home\TestingBooking.cshtml" />
     <Content Include="Views\Home\ViewBookingDetails.cshtml" />
+    <Content Include="Views\Home\ViewMyBookings.cshtml" />
+    <Content Include="Views\Home\ViewAllHotels.cshtml" />
+    <Content Include="Views\Admin\AdminConsole.cshtml" />
+    <Content Include="Views\Home\AddRoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

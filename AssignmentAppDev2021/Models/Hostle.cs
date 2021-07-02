@@ -15,6 +15,18 @@ namespace AssignmentAppDev2021.Models
         public string HostleId { get; set; }
         public string LocationId { get; set; }
         public string HostleName { get; set; }
+
+        public Hostle()
+        {
+
+        }
+        public Hostle(string room)
+        {
+            Hostle hostle = new Hostle();
+            hostle.HostleId = room;
+            hostle.HostleName = room;
+
+        }
     }
 
     public class Reservation
@@ -368,6 +380,10 @@ namespace AssignmentAppDev2021.Models
 
         public Room UpdateRoom(Room updatedRoom)
         {
+            //var result = _Db.rooms.SingleOrDefault(b => b.RoomId == updatedRoom.RoomId);
+            //_Db.rooms.Remove(result);
+            //_Db.SaveChanges();
+            //_Db.rooms.Add(updatedRoom);
             _Db.rooms.Attach(updatedRoom);
             _Db.Entry(updatedRoom).State = EntityState.Modified;
             _Db.SaveChanges();
